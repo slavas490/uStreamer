@@ -1,0 +1,10 @@
+<canvas></canvas>
+
+
+<script>
+  var client = new WebSocket('ws://localhost:9999');
+  var canvas = document.querySelector('canvas');
+  var player = new jsmpeg(client, {
+    canvas: canvas 
+  });
+</script>

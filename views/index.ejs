@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>uStreamer</title>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='/style/style.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.1/jsmpg.js"></script>
+  </head>
+  <body>
+    <p>Hello</p>
+  	<% if(typeof page !== 'undefined') { %>
+  		<%- include('pages/' + page + '.ejs') %>
+  	<% } else { %>
+		<%- include('pages/home.ejs') %>
+  	<% } %>
+  </body>
+</html>
