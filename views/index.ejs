@@ -1,17 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>uStreamer</title>
-    <meta charset="UTF-8">
-    <link rel='stylesheet' href='/style/style.css' />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.1/jsmpg.js"></script>
-  </head>
-  <body>
-    <p>Hello</p>
-  	<% if(typeof page !== 'undefined') { %>
-  		<%- include('pages/' + page + '.ejs') %>
-  	<% } else { %>
-		<%- include('pages/home.ejs') %>
-  	<% } %>
-  </body>
+    <head>
+        <title>uStreamer</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="dashboard.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+        <link rel='stylesheet' href='/style/style.css' />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.1/jsmpg.js"></script>
+    </head>
+<body>
+    <aside class="left">
+        <div class="title">
+            <a href="/"><i class="fa fa-play-circle" aria-hidden="true"></i> <span>uStreamer</span></a>
+        </div>
+
+        <ul class="menu">
+            <li>
+                <a href="/"><i class="fa fa-television" aria-hidden="true"></i><span>Главная</span></a>
+            </li>
+            <li class="selected opened">
+                <a href="/"><i class="fa fa-cogs" aria-hidden="true"></i><span>Настройки</span></a>
+                <ul class="sub">
+                  <li>Видео</li>
+                  <li>Звук</li>
+                </ul>
+            </li>
+
+        </ul>
+    </aside>
+
+    <div class="wrapper">
+    <!-- <% if(typeof page !== 'undefined') { %>
+    <%- include('pages/' + page + '.ejs') %>
+    <% } else { %>
+    <%- include('pages/home.ejs') %>
+    <% } %> -->
+    </div>
+
+</body>
 </html>
+
+<script type="text/javascript">
+  // let menu = {
+  //    onItemSelected: (number, isSubitem) => {
+  //      let el = isSubitem ? 'sub' : 'menu-items';
+  //      let items = document.getElementById(el).children;
+  //      Array.from(items).forEach((item,i) => {
+  //        let c = item.getAttribute('class');
+  //        c = c ? c : '';
+
+  //        if (i == number) {
+
+  //          c = c.replace('closed', ' opened');
+  //          if (!c.includes('selected')){
+  //            c += ' selected';
+  //          }
+  //        }
+  //        else
+  //        {
+
+  //          c = c.replace('opened', ' closed');
+  //          c = c.replace('selected', '');
+  //        }
+
+  //        item.setAttribute('class', c);
+  //      });
+  //    }
+  // };
+
+</script>
