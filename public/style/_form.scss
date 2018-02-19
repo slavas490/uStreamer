@@ -1,0 +1,25 @@
+/*		Buttons		*/
+$color-btn-danger: #ff7600;
+
+.btn {
+	background-color: $color-first;
+	border: 1px solid darken($color-first, 3%);
+	padding: 10px 15px;
+	color: #fff;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+
+	&.danger {
+		background-color: $color-btn-danger;
+		border-color: darken($color-btn-danger, 3%);
+
+		&:hover {
+			background-color: darken($color-btn-danger, 5%);
+		}
+	}
+
+	&:hover {
+		background-color: darken($color-first, 5%);
+	}
+}

@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 
 // video devices
 router.get('/video', (req, res) => {
-	res.view('settings');
+	res.view('settings/video', {obj:22});
 });
 
 // audio devices

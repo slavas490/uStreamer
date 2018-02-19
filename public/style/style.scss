@@ -1,9 +1,6 @@
-$color-first: #1fb5ad;
-$color-second: #32323a;
-$color-third: #28282e;
-$height-top-header: 80px;
-
+@import "_global.scss";
 @import "_fonts.scss";
+@import "_form.scss";
 
 body {
 	margin: 0;
