@@ -1,10 +1,8 @@
-<canvas></canvas>
-
+<canvas id="canvas"></canvas>
+<%- data.a %>
 
 <script>
-  var client = new WebSocket('ws://localhost:9999');
-  var canvas = document.querySelector('canvas');
-  var player = new jsmpeg(client, {
-    canvas: canvas 
-  });
+	var client = new WebSocket('ws://localhost:9999');
+	var canvas = q('canvas');
+	var player = new jsmpeg(client, { canvas });
 </script>

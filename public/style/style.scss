@@ -1,14 +1,16 @@
 $color-first: #1fb5ad;
 $color-second: #32323a;
 $color-third: #28282e;
+$height-top-header: 80px;
 
 @import "_fonts.scss";
 
-body{
+body {
 	margin: 0;
     background: #f1f2f7;
     font-family: 'Open Sans',sans-serif;
     font-size: 13px;
+    display: flex;
 }
 
 /*		MENU		*/
@@ -20,10 +22,12 @@ aside.left {
     flex-direction: column;
 
 	.title {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	    background: $color-first;
 	    font-size: 1.5rem;
-	    line-height: 80px;
-	    height: 80px;
+	    height: $height-top-header;
         text-align: center;
 
 	    a {
@@ -46,7 +50,7 @@ aside.left {
 				background-color: $color-third;
 	    	}
 
-	    	&.open {
+	    	&.active.expand {
 	    		.sub {
 	    			display: block;
 	    		}
@@ -64,7 +68,7 @@ aside.left {
 			}
 
 	    	a {
-				padding: 20px 25px;
+				padding: 20px;
 				display: block;
 				text-align: left;
 				text-decoration: none;
@@ -84,10 +88,11 @@ aside.left {
 	    		padding: 0;
 
 	    		a {
-	    			padding: 15px 25px;
+	    			padding: 15px 20px;
 	    			text-align: left;
 
-	    			&:hover {
+	    			&:hover,
+	    			&.active {
 	    				background-color: #202025;
 	    			}
 	    		}
@@ -97,5 +102,21 @@ aside.left {
 	    & > li {
 	    	border-bottom: 1px solid rgba(64, 64, 64, 0.5);
 	    }
+	}
+}
+
+
+/*		CONTENT		*/
+body .wrapper {
+	flex-grow: 1;
+
+	& > div:first-child {
+		height: $height-top-header;
+		background-color: #ffffff;
+		box-shadow: 3px 0px 10px #d2d2d2;
+	}
+
+	.content {
+		padding: 20px;
 	}
 }

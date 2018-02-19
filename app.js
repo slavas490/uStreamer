@@ -6,13 +6,13 @@ import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
 import Stream from 'node-rtsp-stream';
 
-let stream = new Stream({
-  name: 'foscam_stream',
-  streamUrl: 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov',
-  wsPort: 9999,
-  width: 240,
-  height: 160
-});
+// let stream = new Stream({
+//   name: 'foscam_stream',
+//   streamUrl: 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov',
+//   wsPort: 9999,
+//   width: 240,
+//   height: 160
+// });
 
 
 import routes from './routes/index';

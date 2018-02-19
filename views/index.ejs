@@ -6,8 +6,9 @@
         <link rel="stylesheet" href="dashboard.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-        <link rel='stylesheet' href='/style/style.css' />
+        <link rel="stylesheet" href="/style/style.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.1/jsmpg.js"></script>
+        <script src="js/ctrl.js"></script>
     </head>
 <body>
     <aside class="left">
@@ -19,11 +20,11 @@
             <li>
                 <a href="/"><i class="fa fa-television" aria-hidden="true"></i><span>Главная</span></a>
             </li>
-            <li class="active open expand">
+            <li class="active expand">
                 <a href="/"><i class="fa fa-cogs" aria-hidden="true"></i><span>Настройки</span></a>
                 <ul class="sub">
-                  <li><a href="#">Видео</a></li>
-                  <li><a href="#">Звук</a></li>
+                  <li><a href="/settings/video" class="active">Видео</a></li>
+                  <li><a href="/settings/audio">Звук</a></li>
                 </ul>
             </li>
 
@@ -31,13 +32,18 @@
     </aside>
 
     <div class="wrapper">
-    <!-- <% if(typeof page !== 'undefined') { %>
-    <%- include('pages/' + page + '.ejs') %>
-    <% } else { %>
-    <%- include('pages/home.ejs') %>
-    <% } %> -->
+        <div></div>
+
+        <div class="content">
+            <% if(typeof page !== 'undefined') { %>
+                <%- include('pages/' + page + '.ejs') %>
+            <% } else { %>
+                <%- include('pages/home.ejs') %>
+            <% } %>
+        </div>
     </div>
 
+    <script src="js/home_menu.js"></script>
 </body>
 </html>
 
