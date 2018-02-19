@@ -1,11 +1,13 @@
 [
 	{
 		"name": "Главная",
-		"url": "/"
+		"url": "/",
+		"icon": "television"
 	},
 	{
 		"name": "Настройки",
 		"url": "/settings",
+		"icon": "cogs",
 		"items": [
 			{
 				"name": "Видео",

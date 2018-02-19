@@ -17,17 +17,18 @@
         </div>
 
         <ul class="menu">
-            <li>
-                <a href="/"><i class="fa fa-television" aria-hidden="true"></i><span>Главная</span></a>
-            </li>
-            <li class="active expand">
-                <a href="/"><i class="fa fa-cogs" aria-hidden="true"></i><span>Настройки</span></a>
-                <ul class="sub">
-                  <li><a href="/settings/video" class="active">Видео</a></li>
-                  <li><a href="/settings/audio">Звук</a></li>
-                </ul>
-            </li>
-
+            <% for(let i=0; i<sys.menu.length; i++) { %>
+                <li <%=(sys.menu[i].items ? 'class=expand' : '')%>>
+                    <a href="<%=(sys.menu[i].items ? '#' : sys.menu[i].url)%>"><i class="fa fa-<%=sys.menu[i].icon%>" aria-hidden="true"></i><span><%=sys.menu[i].name%></span></a>
+                    <% if(sys.menu[i].items) { %>
+                        <ul class="sub">
+                            <% for(let j=0; j<sys.menu[i].items.length; j++) { %>
+                                <li><a href="<%= sys.menu[i].url + sys.menu[i].items[j].url %>" class="active"><%=sys.menu[i].items[j].name%></a></li>
+                            <% } %>
+                        </ul>
+                    <% } %>
+                </li>
+            <% } %>
         </ul>
     </aside>
 
