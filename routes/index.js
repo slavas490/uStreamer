@@ -1,16 +1,19 @@
 import express from 'express';
 
+import home from './home';
+import settings from './settings';
+
 const router = express.Router();
 
-// home page
-router.get('/', (req, res) => {
-	res.view();
-});
+router.use((req, res, next) => {
+	console.dir(req.path)
+	next();
+})
 
-
 // home page
-router.get('/settings', (req, res) => {
-	res.view('settings');
-});
+router.use(home);
+
+// settings page
+router.use('/settings', settings);
 
 export default router;
