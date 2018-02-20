@@ -17,7 +17,7 @@ import settings from './settings';
 // });
 
 
-import routes from './routes/index';
+import routes from './routes';
 
 const app = express();
 const debug = Debug('test:app');
