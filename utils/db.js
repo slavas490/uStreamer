@@ -24,6 +24,10 @@ class db {
 	 		});
 	 	});
 	}
+
+	close () {
+		this.db.close();
+	}
 }
 
 module.exports = db;

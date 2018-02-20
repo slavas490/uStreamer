@@ -1,15 +1,14 @@
 import express from 'express';
-import { db } from 'utils';
+
+import video from './video';
 
 const router = express.Router();
 
-let DB = new db();
+/*let DB = new db();
 DB.query('SELECT * FROM video')
 .then(out => {
 	console.log('azazaste', out)
-})
-
-
+})*/
 
 // index
 router.get('/', (req, res) => {
@@ -17,14 +16,10 @@ router.get('/', (req, res) => {
 });
 
 // video devices
-router.get('/video', (req, res) => {
-	res.view('settings/video', {obj:22});
-});
+router.use('/video', video);
 
 // audio devices
-router.get('/audio', (req, res) => {
-	res.view('settings');
-});
+// router.use('/audio', require('./audio'));
 
 
 export default router;

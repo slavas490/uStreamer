@@ -1,7 +1,13 @@
+<% if(data.status != 0) { %>
+	<div class="alert danger"><%= data.error %></div>
+<% } else if(data.status == 0) { %>
+	<div class="alert">Успешно добавлено</div>
+<% } %>
+
 <div class="panel">
 	<div class="title">Добавить источник видео</div>
 	<div class="body">
-		<form>
+		<form method="POST">
 			<div class="form-input">
 				<div class="title">Название:</div>
 				<input type="text" name="name">
