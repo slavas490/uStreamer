@@ -7,7 +7,7 @@
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="/style/style.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.1/jsmpg.js"></script>
-        <script src="js/ctrl.js"></script>
+        <script src="/js/ctrl.js"></script>
     </head>
 <body>
     <aside class="left">
@@ -17,17 +17,13 @@
 
         <ul class="menu">
             <% for(let i=0; i<sys.menu.length; i++) { %>
-            <% var isActive = (sys.menu[i].items ? path.replace('/', '').includes(sys.menu[i].url.replace('/', '')) : path == sys.menu[i].url) 
-            console.log('path',path)
-            console.log('sys.menu[i].url', sys.menu[i].url)
-            console.log('sys.menu[i].items', sys.menu[i].items)
-            console.log('isActive',isActive)%>
-                <li class="<%=(sys.menu[i].items ? (isActive ? 'expand active' : 'expand') : (isActive ? 'active' : ''))%>">
-                    <a href="<%=(sys.menu[i].items ? '#' : sys.menu[i].url)%>"><i class="fa fa-<%=sys.menu[i].icon%>" aria-hidden="true"></i><span><%=sys.menu[i].name%></span></a>
+                <li class="<%=(sys.menu[i].items ? 'expand' : '')%> <%=(sys.urlPath[1] == sys.menu[i].url ? ' active' : '')%>">
+                    <a href="<%=(sys.menu[i].items ? '#' : sys.menu[i].url || '/')%>"><i class="fa fa-<%=sys.menu[i].icon%>" aria-hidden="true"></i><span><%=sys.menu[i].name%></span></a>
                     <% if(sys.menu[i].items) { %>
                         <ul class="sub">
                             <% for(let j=0; j<sys.menu[i].items.length; j++) { %>
-                                <li><a href="<%= sys.menu[i].url + sys.menu[i].items[j].url %>" <%=(path == (sys.menu[i].url + sys.menu[i].items[j].url) ? 'class=active' : '')%>><%=sys.menu[i].items[j].name%></a></li>
+                    			<% let isActiveChild = (sys.urlPath[1] == sys.menu[i].url); %>
+                                <li><a href="<%= '/' + sys.menu[i].url + '/' + sys.menu[i].items[j].url %>" class="<%=(sys.urlPath[2] == sys.menu[i].items[j].url ? 'active' : '')%>"><%=sys.menu[i].items[j].name%></a></li>
                             <% } %>
                         </ul>
                     <% } %>
@@ -40,11 +36,15 @@
         <div></div>
 
         <div class="content">
-          
+            <% if(typeof page !== 'undefined') { %>
+                <%- include('pages/' + page + '.ejs') %>
+            <% } else { %>
+                <%- include('pages/home.ejs') %>
+            <% } %>
         </div>
     </div>
 
-    <script src="js/home_menu.js"></script>
+    <script src="/js/home_menu.js"></script>
 </body>
 </html>
 

@@ -4,9 +4,8 @@ import express from 'express';
 import logger from 'morgan';
 import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
-//import Stream from 'node-rtsp-stream';
-import * as utils from './utils';
-import settings from './settings';
+import Stream from 'node-rtsp-stream';
+import * as utils from 'utils';
 
 // let stream = new Stream({
 //   name: 'foscam_stream',
@@ -15,7 +14,6 @@ import settings from './settings';
 //   width: 240,
 //   height: 160
 // });
-
 
 import routes from './routes';
 
@@ -32,9 +30,6 @@ app.use(bodyParser.urlencoded({
 
 // view engine
 app.use(utils.view);
-
-// settings
-app.use(settings);
 
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),

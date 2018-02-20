@@ -8,11 +8,12 @@ module.exports = (req, res, next) => {
 				...options
 			},
 			system: {
-				menu: req.settings.menu
+				menu: req.settings.menu,
+				urlPath: req.path.split('/')
 			}
 		};
 
-		res.render('index', { page, data: params.user, sys: params.system, path: req.path });
+		res.render('index', { page, data: params.user, sys: params.system });
 	};
 
 	next();

@@ -1,11 +1,19 @@
 import express from 'express';
+import { db } from 'utils';
 
 const router = express.Router();
+
+let DB = new db();
+DB.query('SELECT * FROM video')
+.then(out => {
+	console.log('azazaste', out)
+})
+
+
 
 // index
 router.get('/', (req, res) => {
 	res.redirect('/');
-	// res.view('settings');
 });
 
 // video devices
