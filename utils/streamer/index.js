@@ -90,11 +90,11 @@ class streamer {
 
 	wsSendBroadcast (data) {
 		if(this.ws) {
-			let clients = this.ws.clients;
-
-			for(let i=0; i<clients.length; i++) {
-				clients[i].send(data);
-			}
+			this.ws.clients.forEach(client => {
+				if(!client._closeFrameSent) {
+					client.send(data);
+				}
+			});
 		}
 	}
 

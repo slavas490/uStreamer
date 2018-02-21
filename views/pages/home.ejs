@@ -1,24 +1,13 @@
+<canvas data-ui="canvas" id="canvas_stream"></canvas>
 
-<!DOCTYPE html>
-<html>
-	<body>
-		<canvas id="canvas"></canvas>
+<div>
+  <div class="panel">
+    <div class="title">Webcams</div>
+    <div class="body">
+      <input type="button" value="Click me" class="btn">
+      <input type="text" name="">
+    </div>
+  </div>
+</div>
 
-		<div>
-			<div class="panel">
-				<div class="title">Webcams</div>
-				<div class="body">
-					<input type="button" value="Click me" class="btn">
-					<input type="text" name="">
-				</div>
-			</div>
-		</div>
-
-	</body>
-</html>
-
-<script>
-	var client = new WebSocket('ws://localhost:9999');
-	var canvas = q('canvas');
-	var player = new jsmpeg(client, { canvas });
-</script>
+<script src="/js/ctrl_stream.js"></script>

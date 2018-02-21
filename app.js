@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import Debug from 'debug';
 import express from 'express';
 import logger from 'morgan';
+import NestedError from 'nested-error-stacks';
 import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
 import view from 'view';
@@ -51,8 +52,7 @@ app.use((err, req, res, next) => {
 
 // Handle uncaughtException
 process.on('uncaughtException', (err) => {
-  debug('Caught exception: %j', err);
-  process.exit(1);
+  console.log('uncaughtException', err)
 });
 
 export default app;

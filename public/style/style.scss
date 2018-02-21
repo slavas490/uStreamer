@@ -3,14 +3,23 @@
 @import "_form.scss";
 
 body {
-	margin: 0;
+    margin: 0;
     background: #f1f2f7;
     font-family: 'Open Sans',sans-serif;
     font-size: 13px;
     display: flex;
 }
 
-/*		MENU		*/
+/*    MENU    */
+a { 
+    text-decoration: none; 
+    color: $color-link; 
+
+    &:hover { 
+        color: darken($color-link, 5%); 
+        border-bottom: 1px dashed; 
+    } 
+}
 
 aside.left {
     width: 240px;
@@ -18,106 +27,114 @@ aside.left {
     display: flex;
     flex-direction: column;
 
-	.title {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	    background: $color-first;
-	    font-size: 1.5rem;
-	    height: $top-header-height;
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $color-first;
+        font-size: 1.5rem;
+        height: $top-header-height;
         text-align: center;
 
-	    a {
-	    	text-decoration: none;
-	    	color: #fff;
-	    }
-	}
+        a {
+            text-decoration: none;
+            color: #fff;
+            border: none;
+        }
+    }
 
-	.menu {
-		padding: 0;
-		margin: 0;
-	 	text-align: center;
-	  	float: left;
-	    height: 100vh;
+    .menu {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        float: left;
+        height: 100vh;
 
-	    li {
-	        &.active,
-	    	a:hover {
-				color: $color-first;
-				background-color: $color-third;
-	    	}
+        li {
+            &.active,
+            a:hover {
+                color: $color-first;
+                background-color: $color-third;
+                border: none;
+            }
 
-	    	&.active.expand {
-	    		.sub {
-	    			display: block;
-	    		}
-	    	
-	    		a::after {
-	    			transform: rotateZ(90deg);
-	    		}
-	    	}
+            &.active.expand {
+                .sub {
+                    display: block;
+                }
 
-	    	&.expand > a::after {
-				content: "";
-				background-image: url(../images/nav-expand.png);
-				height: 17px;
-				width: 17px;
-				float: right;
-			}
+                a::after {
+                    transform: rotateZ(90deg);
+                }
+            }
 
-	    	a {
-				padding: 20px;
-				display: block;
-				text-align: left;
-				text-decoration: none;
-				color: #aeb2b7;
+            &.expand > a::after {
+                content: "";
+                background-image: url(../images/nav-expand.png);
+                height: 17px;
+                width: 17px;
+                float: right;
+            }
 
-				span {
-					margin-left: 10px;
-				}
-	    	}
+            a {
+                padding: 20px;
+                display: block;
+                text-align: left;
+                text-decoration: none;
+                color: #aeb2b7;
 
-	    	.sub {
-	    		display: none;
-	    		margin: 0;
-	    		padding: 0;
+                span {
+                    margin-left: 10px;
+                }
+            }
 
-	    		a {
-	    			padding: 15px 20px;
-	    			text-align: left;
+            .sub {
+                display: none;
+                margin: 0;
+                padding: 0;
 
-	    			&:hover,
-	    			&.active {
-	    				background-color: #202025;
-	    			}
-	    		}
-	    	}
-	    }
+                a {
+                    padding: 15px 20px;
+                    text-align: left;
 
-	    & > li {
-	    	border-bottom: 1px solid rgba(64, 64, 64, 0.5);
-	    }
-	}
+                    &:hover,
+                    &.active {
+                        background-color: #202025;
+                    }
+                }
+            }
+        }
+
+        & > li {
+            border-bottom: 1px solid rgba(64, 64, 64, 0.5);
+        }
+    }
 }
 
 
-/*		CONTENT		*/
+/*    CONTENT   */
 body .wrapper {
-	flex-grow: 1;
+    flex-grow: 1;
 
-	& > div:first-child {
-		height: $top-header-height;
-		background-color: #ffffff;
-		box-shadow: 3px 0px 10px #d2d2d2;
-	}
+    & > div:first-child {
+        height: $top-header-height;
+        background-color: #ffffff;
+        box-shadow: 3px 0px 10px #d2d2d2;
+    }
 
-	.content {
-		padding: $padding-primary;
-		
-		& > *:nth-child(n+2) {
-			margin-top: $padding-primary;
-		}
-	}
+    .content {
+        padding: $padding-primary;
+
+        & > *:nth-child(n+2) {
+            margin-top: $padding-primary;
+        }
+    }
 }
 
-/*		HOME		*/
+
+/*    STREAM CANVAS    */ 
+#canvas_stream { 
+    height: 50vh; 
+    display: block; 
+    margin: auto; 
+}
