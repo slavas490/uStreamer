@@ -3,13 +3,16 @@ import { menu } from 'settings';
 module.exports = (req, res, next) => {
 	
 	res.view = (page = 'home', options) => {
+		console.log('	PATH', req.path);
+		console.log('	URL', req.url);req.originalUrl
+		console.log('	originalUrl', req.originalUrl);
 		let params = {
 			user: {
 				...options
 			},
 			system: {
 				menu,
-				urlPath: req.path.split('/')
+				urlPath: req.originalUrl.split('/')
 			}
 		};
 		

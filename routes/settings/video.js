@@ -11,7 +11,6 @@ const getVideoList = async () => {
 
 router.get('/', async (req, res) => {
 	let out = await getVideoList();
-console.log(out)
 	 res.view(PAGE_PATH, { result: out.result });
 });
 
@@ -37,7 +36,6 @@ router.post('/', async (req, res) => {
 
 //// remove video device
 router.get('/remove/:id', async (req, res) => {
-	console.log('REMOVE id=', req.params.id)
 	let out = await dbManager.removeVideoDevice(req.params.id);
 	let list = await getVideoList();
 	if (out.status == 0) {
@@ -50,7 +48,6 @@ router.get('/remove/:id', async (req, res) => {
 
 //// update video device
 router.get('/:id', async (req, res) => {
-	console.log('UPDATE id =', req.params.id);
 	let list = await getVideoList();
 	let video = (await dbManager.getVideoDevices({id: req.params.id})).result;
 	res.view(PAGE_PATH, { updateVideo: video, result: list.result});
