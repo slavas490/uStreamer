@@ -1,18 +1,18 @@
 import { menu } from 'settings';
 
+const { URL } = require('url');
+
 module.exports = (req, res, next) => {
 	
 	res.view = (page = 'home', options) => {
-		console.log('	PATH', req.path);
-		console.log('	URL', req.url);req.originalUrl
-		console.log('	originalUrl', req.originalUrl);
+		let url =  (new URL(req.protocol + '://' + req.get('host') + req.originalUrl)).pathname;
 		let params = {
 			user: {
 				...options
 			},
 			system: {
 				menu,
-				urlPath: req.originalUrl.split('/')
+				urlPath: url.split('/')
 			}
 		};
 		
