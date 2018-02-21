@@ -1,32 +1,32 @@
 <% if(data.status && data.status != 0) { %>
 	<div class="alert danger"><%= data.error %></div>
 <% } else if(data.status == 0) { %>
-	<div class="alert">Успешно добавлено</div>
+	<div class="alert"><%= data.success %></div>
 <% } %>
 
 <div id="panel" class="panel">
-	<% if(sys.updateId) {%>
+	<% if(data.updateVideo) { %>
 		<div class="title">Изменить информацию</div>
 	<%	} 
-		else {%>
+		else { %>
 		<div class="title">Добавить источник видео</div>
 	<% }%>
 	<div class="body">
-		<% if(sys.updateId) {%>
-			<form method="PUT" action="/update">
+		<% if(data.updateVideo) {%>
+			<form method="POST" action="/settings/video/update/<%=data.updateVideo.id%>">
 		<% } else {%>
-			<form method="POST" action="/create">
+			<form method="POST" action="/settings/video">
 		<% }%>
 			<div class="form-input">
 				<div class="title">Название:</div>
-				<input type="text" name="name">
+				<input type="text" name="name" value="<%=data.updateVideo ? data.updateVideo.name : '' %>">
 			</div>
 			<div class="form-input">
 				<div class="title">URL:</div>
-				<input type="text" name="url">
+				<input type="text" name="url" value="<%=data.updateVideo ? data.updateVideo.source : '' %>">
 			</div>
 			<div class="form-input right">
-				<% if(sys.updateId) {%>
+				<% if(data.updateVideo) {%>
 					<input type="submit" value="Сохранить" class="btn">
 				<% } else {%>
 					<input type="submit" value="Добавить" class="btn">
@@ -53,7 +53,7 @@
 			<td><%= (data.result[i].name) %></td>
 			<td><%= (data.result[i].source) %></td>
 			<td>
-				<a href="/settings/video/update/<%=data.result[i].id%>">Изменить</a>
+				<a href="/settings/video/<%=data.result[i].id%>">Изменить</a>
 			</td>
 			<td>
 				
