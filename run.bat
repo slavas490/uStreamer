@@ -1,2 +1,2 @@
-set NODE_PATH=.
+set NODE_PATH=.;.\utils\settings
 npm start

@@ -3,7 +3,7 @@ $color-btn-danger: #ff7600;
 
 .btn {
 	background-color: $color-first;
-	border: 1px solid darken($color-first, 3%);
+	border: 1px solid darken($color-first, 5%);
 	padding: $padding-inner;
 	color: #fff;
 	border-radius: $border-radius;
@@ -28,7 +28,7 @@ $color-btn-danger: #ff7600;
 /*		Panel		*/
 .panel {
     border-radius: $border-radius;
-    border: 1px solid $color-first;
+    border: 1px solid darken($color-first, 5%);
 
     & > .title {
 	    padding: $padding-inner;
@@ -38,7 +38,7 @@ $color-btn-danger: #ff7600;
 	}
 
 	& > .body {
-	    padding: 15px;
+	    padding: $padding-primary;
 	}
 }
 
@@ -76,5 +76,33 @@ input[type="password"]:focus {
 
 	&:nth-child(n+2) {
 		margin-top: $padding-primary;
+	}
+}
+
+
+/*		Alert		*/
+.alert {
+	padding: $padding-inner;
+
+	border: 1px solid darken($color-first, 5%);
+	border-radius: $border-radius;
+	background-color: $color-first;
+	color: #fff;
+
+	&:before {
+		font-family: "FontAwesome";
+		content: "\f00c";
+		margin-right: 5px;
+	}
+
+	&.danger {
+		border-color: darken($color-danger, 5%);
+		background-color: $color-danger;
+
+		&:before {
+			font-family: "FontAwesome";
+			content: "\f071";
+			margin-right: 5px;
+		}
 	}
 }

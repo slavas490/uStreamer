@@ -113,6 +113,10 @@ body .wrapper {
 
 	.content {
 		padding: $padding-primary;
+		
+		& > *:nth-child(n+2) {
+			margin-top: $padding-primary;
+		}
 	}
 }
 

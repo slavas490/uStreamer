@@ -4,17 +4,8 @@ import express from 'express';
 import logger from 'morgan';
 import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
-import Stream from 'node-rtsp-stream';
-import * as utils from 'utils';
-
-// let stream = new Stream({
-//   name: 'foscam_stream',
-//   streamUrl: 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov',
-//   wsPort: 9999,
-//   width: 240,
-//   height: 160
-// });
-
+import view from 'view';
+import streamer from 'streamer';
 import routes from './routes';
 
 const app = express();
@@ -29,7 +20,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // view engine
-app.use(utils.view);
+app.use(view);
 
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),

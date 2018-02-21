@@ -10,6 +10,10 @@
 		"icon": "cogs",
 		"items": [
 			{
+				"name": "Общее",
+				"url": "general"
+			},
+			{
 				"name": "Видео",
 				"url": "video"
 			},

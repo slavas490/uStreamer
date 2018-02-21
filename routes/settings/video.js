@@ -1,5 +1,6 @@
 import express from 'express';
-import { db } from 'utils';
+import db from 'db';
+import streamer from 'streamer';
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.post('/', (req, res) => {
 		form = req.body;
 
 	if(!form || !form.name || !form.url) {
-		return req.view(PAGE_PATH, { status: 1, error: 'Необходимо заполнить все поля!' });
+		return res.view(PAGE_PATH, { status: 1, error: 'Необходимо заполнить все поля!', form });
 	}
 
 	DB.query('INSERT INTO video (name, source) VALUES (?,?)', [form.name, form.url])
@@ -24,7 +25,7 @@ router.post('/', (req, res) => {
 		res.view(PAGE_PATH, { status: 0 });
 	})
 	.catch(err => {
-		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...' });
+		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...', form });
 	});
 
 	DB.close();
