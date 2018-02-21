@@ -106,3 +106,42 @@ input[type="password"]:focus {
 		}
 	}
 }
+
+/*		Table		*/
+.table {
+	border: 1px solid $color-first;
+    border-radius: 2px;
+   	margin-top: $padding-primary;
+	table {
+
+		width: 100%;
+	    border-collapse: collapse;
+
+	    td {
+	    	padding: $padding-inner;
+	    }
+
+	    tr {
+	    	background-color: #ececec;
+
+			&:first-child {
+				background-color: $color-first;
+				color: #fff;
+				font-size: 0.9rem;
+		    	font-weight: 600;
+			}
+
+			&:last-child {
+				border-buttom: 1px solid $color-first;
+			}
+
+			&:nth-child(2n+2) {
+				background-color: #fff;
+			}
+
+			& > td input:nth-child(n+2) {
+				    margin-left: 15px;
+			}
+	    }
+	}
+}

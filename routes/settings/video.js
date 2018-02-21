@@ -1,34 +1,74 @@
 import express from 'express';
-import db from 'db';
-import streamer from 'streamer';
+import { dbManager }  from 'db';
 
 const router = express.Router();
 
 let PAGE_PATH = 'settings/video';
+	
+console.log('DDDDBBBB', dbManager);
 
-// video devices list
-router.get('/', (req, res) => {
-	res.view(PAGE_PATH);
+router.get('/', async (req, res) => {
+	let out = await dbManager.getVideoDevices()
+
+	 res.view(PAGE_PATH, { result: out.result });
 });
 
-// create new video device
-router.post('/', (req, res) => {
-	let DB = new db(),
-		form = req.body;
+//// create new video device
+router.post('/create', async (req, res) => {
+	let form = req.body;
 
 	if(!form || !form.name || !form.url) {
-		return res.view(PAGE_PATH, { status: 1, error: 'Необходимо заполнить все поля!', form });
+		return res.view(PAGE_PATH, { status: 1, error: 'Необходимо заполнить все поля!' });
 	}
 
-	DB.query('INSERT INTO video (name, source) VALUES (?,?)', [form.name, form.url])
-	.then(out => {
-		res.view(PAGE_PATH, { status: 0 });
-	})
-	.catch(err => {
-		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...', form });
-	});
+	let out = dbManager.createVideoDevice(form.name, form.url);
+	if (out.status == 0) {
+		res.redirect('/'); 
+	}
+	else {
+		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...' });
+	}
+});
 
-	DB.close();
+//// remove video device
+router.delete('/remove/:id', async (req, res) => {
+	console.log('REMOVE id=', req.params.id)
+	let out = await dbManager.removeVideoDevice(req.params.id);
+	if (out.status == 0) {
+		res.redirect('/'); 
+	}
+	else {
+		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...' });
+	}
+});
+
+//// update video device
+router.get('/update/:id', async (req, res) => {
+	console.log('UPDATE START ', req.params.id)
+	let out = await dbManager.getVideoDevices();
+
+	if (out.status == 0) {
+		res.redirect('/' + PAGE_PATH + '/' + req.params.id); 
+	}
+	else {
+		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...' });
+	}
+});
+
+router.post('/update/:id', async (req, res) => {
+	let form = req.body;
+
+	if(!form || !form.name || !form.url) {
+		return res.view(PAGE_PATH, { status: 1, error: 'Необходимо заполнить все поля!' });
+	}
+
+	let out = await dbManager.updateVideoDevice(req.params.id, form.name, form.url);
+	if (out.status == 0) {
+		res.redirect('/'); 
+	}
+	else {
+		res.view(PAGE_PATH, { status: 1, error: 'Что-то пошло не так...' });
+	}
 });
 
 export default router;
