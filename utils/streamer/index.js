@@ -131,7 +131,7 @@ class streamer {
 			this.streamerStop();
 			this.streamerSendHeader(socket, video_info);
 
-			this.stream = spawn('ffmpeg', options, {
+			this.stream = spawn('./bin/ffmpeg', options, {
 				detached: false
 			});
 			this.stream.stdout.on('data', data => {
