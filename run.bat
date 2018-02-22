@@ -1,2 +1,3 @@
-set NODE_PATH=.;.\utils;.\bin
+set NODE_PATH=.;.\utils
+set PATH=%PATH%;.\bin
 npm start

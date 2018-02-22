@@ -1,6 +1,7 @@
 import express from 'express';
 
 import video from './video';
+import audio from './audio';
 
 const router = express.Router();
 
@@ -11,5 +12,8 @@ router.get('/', (req, res) => {
 
 // video devices
 router.use('/video', video);
+
+// audio devices
+router.use('/audio', audio);
 
 export default router;

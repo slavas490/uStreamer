@@ -8,7 +8,7 @@ class devicesManager {
 			try {
 				let buff = '';
 
-				let ffmpeg = spawn('./bin/ffmpeg.exe', ' -list_devices true -f dshow -i dummy'.split(' '), {
+				let ffmpeg = spawn('ffmpeg', ' -list_devices true -f dshow -i dummy'.split(' '), {
 						detached: false
 					});
 

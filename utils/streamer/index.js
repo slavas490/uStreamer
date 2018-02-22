@@ -29,7 +29,7 @@ class streamer {
 		let info = '';
 
 		return new Promise((resolve, reject) => {
-			let ffprobe = spawn('./bin/ffprobe', `-v quiet -print_format json -show_streams -i ${source}`.split(' '), {
+			let ffprobe = spawn('ffprobe', `-v quiet -print_format json -show_streams -i ${source}`.split(' '), {
 				detached: false
 			});
 
@@ -131,7 +131,7 @@ class streamer {
 			this.streamerStop();
 			this.streamerSendHeader(socket, video_info);
 
-			this.stream = spawn('./bin/ffmpeg', options, {
+			this.stream = spawn('ffmpeg', options, {
 				detached: false
 			});
 			this.stream.stdout.on('data', data => {
