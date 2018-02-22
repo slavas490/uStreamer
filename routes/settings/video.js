@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 	res.view(PAGE_PATH, { result: out.result });
 });
 
-//// create new video device
+// create new video device
 router.post('/', async (req, res) => {
 	let form = req.body;
 
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
 	}
 });
 
-//// remove video device
+// remove video device
 router.get('/remove/:id', async (req, res) => {
 	let out = await dbManager.removeVideoDevice(req.params.id);
 	let list = await getVideoList();
@@ -46,7 +46,7 @@ router.get('/remove/:id', async (req, res) => {
 	}
 });
 
-//// update video device
+// update video device
 router.get('/:id', async (req, res) => {
 	let list = await getVideoList();
 	let video = (await dbManager.getVideoDevices({id: req.params.id})).result;
