@@ -11,7 +11,7 @@ const getVideoList = async () => {
 
 router.get('/', async (req, res) => {
 	let out = await getVideoList();
-	 res.view(PAGE_PATH, { result: out.result });
+	res.view(PAGE_PATH, { result: out.result });
 });
 
 //// create new video device

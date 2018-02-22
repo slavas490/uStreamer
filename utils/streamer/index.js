@@ -91,7 +91,7 @@ class streamer {
 	wsSendBroadcast (data) {
 		if(this.ws) {
 			this.ws.clients.forEach(client => {
-				if(!client._closeFrameSent) {
+				if(!client._closeFrameSent && client.readyState != 2) {
 					client.send(data);
 				}
 			});
@@ -100,7 +100,7 @@ class streamer {
 
 	wsStop () {
 		if(this.ws) {
-
+			console.log('STOP CALLED');
 		}
 	}
 
@@ -142,7 +142,7 @@ class streamer {
 			// });
 		})
 		.catch(out => {
-			console.log('getVideoInfo', out)
+			//console.log('getVideoInfo', out)
 		});
 	}
 
