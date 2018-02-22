@@ -16,8 +16,7 @@
         </div>
 
         <ul class="menu">
-            <% for(let i=0; i<sys.menu.length; i++) { 
-            console.log('URL PATH', sys.urlPath)
+            <% for(let i=0; i<sys.menu.length; i++) {
             %>
                 <li class="<%=(sys.menu[i].items ? 'expand' : '')%> <%=(sys.urlPath[1] == sys.menu[i].url ? ' active' : '')%>">
                     <a href="<%=(sys.menu[i].items ? '#' : sys.menu[i].url || '/')%>"><i class="fa fa-<%=sys.menu[i].icon%>" aria-hidden="true"></i><span><%=sys.menu[i].name%></span></a>
