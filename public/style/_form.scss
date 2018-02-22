@@ -184,3 +184,16 @@ input[type="password"]:focus {
         }
     }
 }
+
+/*		Select		*/
+select {
+    width: 100%;
+	padding: $padding-inner;
+	border: 1px solid #e2e2e2;
+	border-radius: $border-radius;
+	font-family: 'Open Sans',sans-serif;
+	&:focus {
+		border-color: #afafaf;
+		outline: none;
+	}
+}
