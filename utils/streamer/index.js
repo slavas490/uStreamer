@@ -19,7 +19,7 @@ class streamer {
 			params = `-f lavfi -i anullsrc -rtsp_transport udp -i ${options.video_source} -tune zerolatency -vcodec libx264 -pix_fmt + -c:v copy -c:a aac -strict experimental -f flv ${target_url} ${forwardOption}`;
 		}
 		else {
-			params = `-rtsp_transport tcp -i ${options.video_source} ${forwardOption}`;
+			params = `-rtsp_transport udp -i ${options.video_source} ${forwardOption}`;
 		}
 
 		return params.split(' ');
@@ -29,7 +29,7 @@ class streamer {
 		let info = '';
 
 		return new Promise((resolve, reject) => {
-			let ffprobe = spawn('ffprobe', `-v quiet -print_format json -show_streams -i ${source}`.split(' '), {
+			let ffprobe = spawn('./bin/ffprobe', `-v quiet -print_format json -show_streams -i ${source}`.split(' '), {
 				detached: false
 			});
 
