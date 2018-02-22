@@ -189,11 +189,20 @@ input[type="password"]:focus {
 select {
     width: 100%;
 	padding: $padding-inner;
+	padding-right: 1.5rem;
 	border: 1px solid #e2e2e2;
 	border-radius: $border-radius;
-	font-family: 'Open Sans',sans-serif;
+	font-family: 'Open Sans',sans-serif; 
+	 -webkit-appearance: none;  
+        -moz-appearance: none; 
+    appearance: none;
+	background: #fff url("/images/arrow.png") no-repeat right;
+	background-size: 15px;
 	&:focus {
 		border-color: #afafaf;
 		outline: none;
 	}
+	&::-ms-expand {
+    display: none;
+}
 }
