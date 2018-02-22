@@ -46,22 +46,20 @@
 			<td> </td>
 			<td> </td>
 		</tr>
-	<% for(let i = 0; i < data.result.length; i++) {%>
-		<tr>
-			<td><%= (data.result[i].id) %></td>
-			<td><%= (data.result[i].name) %></td>
-			<td><%= (data.result[i].source) %></td>
-			<td>
-				<a href="/settings/video/<%=data.result[i].id%>">Изменить</a>
-			</td>
-			<td>
-				
-				<a href="/settings/video/remove/<%=data.result[i].id%>">Удалить </a>
-			</td>
-		</tr>
-	
+		<% for(let i = 0; i < data.result.length; i++) {%>
+			<tr>
+				<td><%= (data.result[i].id) %></td>
+				<td><%= (data.result[i].name) %></td>
+				<td><%= (data.result[i].source) %></td>
+				<td>
+					<a href="/settings/video/<%=data.result[i].id%>">Изменить</a>
+				</td>
+				<td>
+					
+					<a href="/settings/video/remove/<%=data.result[i].id%>">Удалить </a>
+				</td>
+			</tr>
 		<% }%>
-
 	</table>
 </div>
 <% }%>

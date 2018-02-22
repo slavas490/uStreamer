@@ -1,3 +1,50 @@
-<div>
-	AUDIO
+<% if(data.status && data.status != 0) { %>
+	<div class="alert danger"><%= data.error %></div>
+<% } else if(data.status == 0) { %>
+	<div class="alert"><%= data.success %></div>
+<% } %>
+
+<div id="panel" class="panel">
+	<% if(data.updateVideo) { %>
+		<div class="title">Изменить информацию</div>
+	<%	} 
+		else { %>
+		<div class="title">Добавить источник аудио</div>
+	<% }%>
+	<div class="body">
+			<form method="POST" action="/settings/audio">
+			<div class="form-input">
+				<div class="title">Название:</div>
+				<select name="fullname">
+					<% for(let i = 0; i < data.audioDevices.length; i++) { 
+					let val = data.audioDevices[i].name + '    (' + data.audioDevices[i].path + ')'%>
+					<option  value="<%= val%>"><%= val%></option>
+					<%}%>
+				</select>
+			</div>
+			<div class="form-input right">
+				<input type="submit" value="Добавить" class="btn">
+			</div>
+		</form>
+	</div>
 </div>
+
+<div class="table">
+	<table>
+		<tr>
+			<td>№</td>
+			<td>Название</td>
+			<td>Путь</td>
+			<td> </td>
+		</tr>
+		<% for(let i = 0; i < data.result.length; i++) {%>
+			<tr>
+				<td><%= (data.result[i].id) %></td>
+				<td><%= (data.result[i].name) %></td>
+				<td><%= (data.result[i].path) %></td>
+				<td><a href="/settings/audio/<%=data.result[i].id%>">Удалить </a></td>
+			</tr>
+		<% }%>
+	</table>
+</div>
+
