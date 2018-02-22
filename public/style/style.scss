@@ -10,7 +10,7 @@ body {
     display: flex;
 }
 
-/*    MENU    */
+/*      MENU        */
 a { 
     text-decoration: none; 
     color: $color-link; 
@@ -112,7 +112,8 @@ aside.left {
 }
 
 
-/*    CONTENT   */
+/*      CONTENT     */
+
 body .wrapper {
     flex-grow: 1;
 
@@ -120,6 +121,42 @@ body .wrapper {
         height: $top-header-height;
         background-color: #ffffff;
         box-shadow: 3px 0px 10px #d2d2d2;
+        padding-left: $padding-primary;
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+
+        & > div {
+            display: flex;
+            align-items: center;
+        }
+
+        .status {
+            border-radius: 50%;
+            margin-right: 5px;
+            font-size: 8px;
+
+
+            &.onair {
+                animation: onair 1s infinite;
+            }
+
+            &.stop {
+                color: #f76409;
+            }
+        }
+
+        .info {
+        }
+
+        .timer {
+            margin-left: 5px;
+            color: lighten(black, 50%);
+
+            span {
+                animation: timer_pulse 1s infinite;
+            }
+        }
     }
 
     .content {
@@ -129,10 +166,56 @@ body .wrapper {
             margin-top: $padding-primary;
         }
     }
+
+    #stream-control {
+        width: 300px;
+        margin: auto;
+
+        .timer {
+            margin: $padding-primary;
+            display: block;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+}
+
+@keyframes onair {
+    0% {
+        color: lighten($color-first, 15%);
+    }
+
+    50% {
+        color: $color-first;
+    }
+
+    100% {
+        color: lighten($color-first, 15%);
+    }
+}
+
+@keyframes timer_pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 
-/*    STREAM CANVAS    */ 
+/*      STREAM CANVAS    */
+
 #canvas_stream { 
     height: 50vh; 
     display: block; 

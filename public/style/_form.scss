@@ -35,6 +35,7 @@ $color-btn-danger: #ff7600;
 	    color: white;
 	    background-color: $color-first;
 	    border-color: $color-first;
+	    font-weight: 600;
 	}
 
 	& > .body {
@@ -117,7 +118,7 @@ input[type="password"]:focus {
 
 
 	    tr {
-	    	background-color: #ececec;
+	    	background-color: $color-table;
 		    
 		    td {
 		    	padding: $padding-inner;
@@ -143,4 +144,43 @@ input[type="password"]:focus {
 			}
 	    }
 	}
+}
+
+/*      List group      */
+.list-group {
+	border: 1px solid $color-first;
+	border-radius: $border-radius $border-radius 0 0;
+
+    .title {
+        padding: $padding-inner;
+        background-color: $color-first;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .body {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+        	$active-bk: #d8d8d8;
+
+            a {
+            	display: block;
+                text-decoration: none;
+                color: #000;
+                padding: $padding-inner;
+                border-bottom: none;
+
+                &:hover {
+                	background-color: $active-bk;
+                }
+            }
+
+            &.active {
+            	background-color: $active-bk;
+            }
+        }
+    }
 }
