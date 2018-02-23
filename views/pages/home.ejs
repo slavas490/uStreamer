@@ -14,7 +14,10 @@
 		<div class="title">Источник видео</div>
 		<ul class="body">
 			<% for(let i = 0; i < data.videoDevices.length; i++) { %>
-				<li><a href="#"> <%- '<span>' + data.videoDevices[i].name + '</span> <br>' + data.videoDevices[i].source%> </a></li>
+				<li><a href="#"> 
+					<div class="name"> <%=data.videoDevices[i].name%></div>
+					<div class="info"> <%=data.videoDevices[i].source%> </div>	
+				</a></li>
 			<%}%>
 		</ul>
 	</div>
@@ -23,7 +26,10 @@
 		<div class="title">Источник звука</div>
 		<ul class="body">
 			<% for(let i = 0; i < data.audioDevices.length; i++) {  %>
-				<li><a href="#"> <%- '<span>' + data.audioDevices[i].name + '</span> <br>' + data.audioDevices[i].path%> </a></li>
+				<li><a href="#"> 
+					<div class="name"> <%=data.audioDevices[i].name%></div>
+					<div class="info"> <%=data.audioDevices[i].path%> </div>	
+				</a></li>
 			<%}%>
 		</ul>
 </div>
