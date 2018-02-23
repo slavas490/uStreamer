@@ -1,0 +1,24 @@
+<% if(data.status && data.status != 0) { %>
+	<div class="alert danger"><%= data.error %></div>
+<% } else if(data.status == 0) { %>
+	<div class="alert"><%= data.success %></div>
+<% } %>
+
+<div id="panel" class="panel">
+	<div class="title">Изменить конфигурацию</div>
+	<div class="body">
+		<form method="POST" action="/settings/general">
+			<div class="form-input">
+				<div class="title">Ссылка Youtube:</div>
+				<input type="text" name="youtube_url" value="<%=data.result.youtube_url%>">
+			</div>
+			<div class="form-input">
+				<div class="title">Youtube key:</div>
+				<input type="text" name="youtube_key" value="<%=data.result.youtube_key%>">
+			</div>
+			<div class="form-input right">
+				<input type="submit" value="Сохранить" class="btn">
+			</div>
+		</form>
+	</div>
+</div>

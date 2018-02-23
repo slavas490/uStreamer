@@ -123,6 +123,48 @@ class dbManager {
 			return({ status: 1, error: 'Ошибка изменения аудио (id = ' + id + '): ' + err});
 		});
 	}
+
+	/*		General		*/
+	getGeneralSettings() {
+		let sql = 'SELECT * FROM general';
+
+		return this.db.query(sql)
+		.then(out => {
+			let ret = {};
+
+			if(!out) {
+				throw 'getGeneralSetting is not working';
+			}
+
+			out.forEach(item => {
+				ret[item.name] = item.value;
+			});
+
+			return { status: 0, result: ret };
+		})
+		.catch (err => {
+			console.log('EXCEPTION getAudioDevices: ', err);
+			return { status: 1, error: 'Ошибка получения списка аудио: ' + err};
+		});
+	}
+
+	updateGeneralSettings(settings = {}) {
+
+		console.log('SETTINGS KEYS', Object.keys(settings));
+		return new Promise((resolve, reject) => {
+			let res = {status: 0, error: ''};
+			Object.keys(settings).forEach(key => {
+				return this.db.query('UPDATE general SET value=? WHERE name=?', [settings[key], key])
+				.then(out => {
+				})
+				.catch(err => {
+					console.log('EXCEPTION updateVideoDevice: ', err);
+					res = { status: 1, error: 'Ошибка изменения настроек:' + err};
+				});
+			});
+			resolve(res);
+		});
+	}
 }
 
 let manager = new dbManager();
