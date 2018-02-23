@@ -10,6 +10,10 @@ body {
     display: flex;
 }
 
+.display-none {
+    display: none!important;
+}
+
 /*      MENU        */
 a { 
     text-decoration: none; 

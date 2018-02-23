@@ -149,17 +149,16 @@ class dbManager {
 	}
 
 	updateGeneralSettings(settings = {}) {
-
-		console.log('SETTINGS KEYS', Object.keys(settings));
 		return new Promise((resolve, reject) => {
+
 			let res = {status: 0, error: ''};
+
 			Object.keys(settings).forEach(key => {
 				return this.db.query('UPDATE general SET value=? WHERE name=?', [settings[key], key])
-				.then(out => {
-				})
 				.catch(err => {
 					console.log('EXCEPTION updateVideoDevice: ', err);
-					res = { status: 1, error: 'Ошибка изменения настроек:' + err};
+					res.status = 1;
+					res.error = 'Ошибка изменения настроек: ' + err;
 				});
 			});
 			resolve(res);
