@@ -148,6 +148,7 @@ input[type="password"]:focus {
 
 /*      List group      */
 .list-group {
+    width: 100%;
 	border: 1px solid $color-first;
 	border-radius: $border-radius $border-radius 0 0;
 
