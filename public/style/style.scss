@@ -194,7 +194,7 @@ body .wrapper {
     display: flex;
     justify-content: space-around;
     &>div:nth-child(n+2) {
-        margin-left: 15px;
+        margin-left: $padding-primary;
     }
 }
 

@@ -167,11 +167,17 @@ input[type="password"]:focus {
         	$active-bk: #d8d8d8;
 
             a {
+            	font-size: 0.7rem;
             	display: block;
                 text-decoration: none;
                 color: #000;
                 padding: $padding-inner;
                 border-bottom: none;
+
+                &>span {
+                	font-weight: 600;
+    				font-size: 0.9rem;
+                }
 
                 &:hover {
                 	background-color: $active-bk;
