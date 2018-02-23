@@ -189,6 +189,15 @@ body .wrapper {
     }
 }
 
+/*      CONTAINER       */
+.container-flex {
+    display: flex;
+    justify-content: space-around;
+    &>div:nth-child(n+2) {
+        margin-left: 15px;
+    }
+}
+
 @keyframes onair {
     0% {
         color: lighten($color-first, 15%);
@@ -224,4 +233,5 @@ body .wrapper {
     height: 50vh; 
     display: block; 
     margin: auto; 
+    background: $color-input;
 }
