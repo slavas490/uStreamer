@@ -2,24 +2,45 @@ import { spawn } from 'child_process';
 import ws from 'ws';
 import db from 'db';
 import buildUrl from 'build-url';
+import * as settings from 'settings';
+import { dbManager }  from 'db';
 
 class streamer {
 	constructor () {
 		this.ws = null;
 		this.stream = null;
 		this.active = false;
+		this.options = {
+			device: { },
+			youtube: { }
+		};
+		this.startTime = 0;
 	}
 
-	ffmpegTemplate (options) {
+	setActiveVideoDevice(videoUrl) {
+		this.options.device.video = videoUrl;
+	}
+
+	setActiveAudioDevice(audioPath) {
+		this.options.device.audio = audioPath;
+	}
+
+	setGeneralSettings(youtube) {
+		this.options.youtube.url = youtube['youtube_url'];
+		this.options.youtube.key = youtube['youtube_key'];
+	}
+
+	ffmpegTemplate () {
 		let params,
+			options = this.options,
 			target_url = buildUrl(options.youtube.url, { path: options.youtube.key }),
 			forwardOption = '-f mpeg1video -b:v 800k -r 30 -';
 
 		if(options.youtube.active) {
-			params = `-f lavfi -i anullsrc -rtsp_transport udp -i ${options.video_source} -tune zerolatency -vcodec libx264 -pix_fmt + -c:v copy -c:a aac -strict experimental -f flv ${target_url} ${forwardOption}`;
+			params = `-f lavfi -i anullsrc -rtsp_transport udp -i ${options.device.video} -tune zerolatency -vcodec libx264 -pix_fmt + -c:v copy -c:a aac -strict experimental -f flv ${target_url} ${forwardOption}`;
 		}
 		else {
-			params = `-rtsp_transport udp -i ${options.video_source} ${forwardOption}`;
+			params = `-rtsp_transport udp -i ${options.device.video} ${forwardOption}`;
 		}
 
 		return params.split(' ');
@@ -78,10 +99,12 @@ class streamer {
 
 		if(data[0] == 'server-status') {
 			if(data[1] == 'start') {
+				this.startTime = new Date();
 				this.active = true;
 				this.streamerStart(socket, true);
 			}
 			else if(data[1] == 'stop') {
+				this.startTime = 0;
 				this.active = false;
 				this.streamerStart(socket, false);
 			}
@@ -104,34 +127,20 @@ class streamer {
 		}
 	}
 
-	streamerStart (socket, isYoutubeActive) {
-		let options;
+	streamerStart (socket) {
+		let videoDevice = this.options.device.video;
 
-		if(isYoutubeActive) {
-			options = this.ffmpegTemplate({
-				video_source: 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov',
-				youtube: {
-					url: 'rtmp://a.rtmp.youtube.com/live2',
-					key: 'femr-hz8z-55ad-b78f',
-					active: true
-				}
-			});
-		}
-		else {
-			options = this.ffmpegTemplate({
-				video_source: 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov',
-				youtube: {
-					active: false
-				}
-			});
-		}
+		if(!videoDevice) return;
 
-		this.getVideoInfo('rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov')
+		this.getVideoInfo(this.options.device.video)
 		.then(video_info => {
 			this.streamerStop();
-			this.streamerSendHeader(socket, video_info);
 
-			this.stream = spawn('ffmpeg', options, {
+			if(socket) {
+				this.streamerSendHeader(socket, video_info);
+			}
+
+			this.stream = spawn('ffmpeg', this.ffmpegTemplate(), {
 				detached: false
 			});
 			this.stream.stdout.on('data', data => {
@@ -142,7 +151,7 @@ class streamer {
 			// });
 		})
 		.catch(out => {
-			//console.log('getVideoInfo', out)
+			console.log('getVideoInfo', out)
 		});
 	}
 
@@ -155,6 +164,8 @@ class streamer {
 		socket.send(streamHeader, {
 			binary: true
 		});
+
+		console.log("ON SEND")
 	}
 
 	streamerStop () {
@@ -162,10 +173,41 @@ class streamer {
 			this.stream.kill();
 		}
 	}
+
+	streamerRestart () {
+		//this.streamerStart();
+		streamServer.wsStart(settings.general.streamer.server.port);
+	}
+
+	// setOptionsVideoDevice (url) {
+	// 	this.options.device.video = url;
+	// };
+
+	// setOptionsYoutube (params) {
+	// 	this.options.youtube.url = params.url;
+	// 	this.options.youtube.key = params.key;
+	// }
 };
 
 
-let server = new streamer();
-server.wsStart(9999);
+let streamServer = new streamer();
+streamServer.wsStart(settings.general.streamer.server.port);
+async() => {
+	console.log('ASYNC')
+let out = await dbManager.getActiveVideoDevice();
+if (out.status == 0) {
+	streamServer.setActiveVideoDevice(out.result.source);
+}
 
-module.exports = server;
+out = await dbManager.getActiveAudioDevice();
+if (out.status == 0) {
+	streamServer.setActiveAudioDevice(out.result.path);
+}
+
+out = await dbManager.getGeneralSettings();
+if (out.status == 0) {
+	streamServer.setGeneralSettings(out.result);
+}
+}
+
+module.exports = streamServer;

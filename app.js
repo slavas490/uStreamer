@@ -6,7 +6,7 @@ import NestedError from 'nested-error-stacks';
 import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
 import view from 'view';
-import streamer from 'streamer';
+// import streamer from 'streamer';
 import routes from './routes';
 
 const app = express();

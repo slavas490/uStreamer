@@ -1,0 +1,7 @@
+{
+	"streamer": {
+		"server": {
+			"port": 9999
+		}
+	}
+}
