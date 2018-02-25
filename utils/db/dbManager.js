@@ -15,110 +15,92 @@ class dbManager {
 		}
 
 		if(options.order) {
-		sql += ' ORDER BY ' + (options.order.by || 'id')  + ' ' + (options.order.type == 'ASC' ? 'ASC' : 'DESC');
+			sql += ' ORDER BY ' + (options.order.by || 'id')  + ' ' + (options.order.type == 'ASC' ? 'ASC' : 'DESC');
 		}
 
 		return this.db.query(sql)
-		.then(async (out) => {
-			if (out && options.id){
-				out = out[0];
-			}
-
-			if (out && out.length > 0)
-			{
-				let active = out.find(video => video.active == 1);
-
-				if (!active || active.length == 0){
-					out[0].active = 1;
-					return new Promise(async (resolve, reject) => { 
-						this.updateVideoDevice(out[0].id, out[0].name, out[0].source, out[0].active)
-						.then(ret => {
-							return {status: 0, result: out};
-						})
-						.catch (err => {
-							return { status: 1, error: 'Ошибка изменения активного видео: ' + err};
-						});
-						resolve();});
-					
+		.then(out => {
+			if (out) {
+				if(options.id) {
+					out = out[0];
 				}
-			}
 
-			return {status: 0, result: out};
+				return {status: 0, result: out};
+			}
+			else {
+				throw 'Видео устройства отсутствуют';
+			}
 		})
 		.catch (err => {
-			return { status: 1, error: 'Ошибка получения списка видео: ' + err};
+			return { status: 1, error: 'Ошибка получения списка видео устройств: ' + err};
 		});
 	}
 
 	createVideoDevice(name, source) {
 		return this.db.query('INSERT INTO video (name, source) VALUES (?,?)', [name, source])
 		.then(out => {
-			return({ status: 0});
+			return({ status: 0 });
 		})
 		.catch(err => {
-			console.log('EXCEPTION createVideoDevice: ', err);
-			return({ status: 1, error: 'Ошибка добавления видео: ' + err});
+			return({ status: 1, error: 'Ошибка добавления видео устройства: ' + err});
 		});
 	}
 
 	removeVideoDevice(id) {
-		return this.db.query('DELETE FROM video WHERE id=?', [id])
+		return this.db.query('DELETE FROM video WHERE id=?', id)
 		.then(out => {
-			return({ status: 0});
+			return({ status: 0 });
 		})
 		.catch(err => {
-			console.log('EXCEPTION removeVideoDevice: ', err);
-			return({ status: 1, error: 'Ошибка удаления видео (id = ' + id + '): ' + err});
+			return({ status: 1, error: 'Ошибка удаления видео устройства (id = ' + id + '): ' + err});
 		});
 	}
 
-	updateVideoDevice(id, name, source, active = 0) {
-		return this.db.query('UPDATE video SET name=?,source=?,active=? WHERE id=?', [name, source, active, id])
+	updateVideoDevice(id, name, source) {
+		return this.db.query('UPDATE video SET name=?, source=? WHERE id=?', [name, source, id])
 		.then(out => {
-			return({ status: 0});
+			return({ status: 0 });
 		})
 		.catch(err => {
-			console.log('EXCEPTION updateVideoDevice: ', err);
-			return({ status: 1, error: 'Ошибка изменения видео (id = ' + id + '): ' + err});
+			return({ status: 1, error: 'Ошибка изменения видео устройства (id = ' + id + '): ' + err});
 		});
 	}
 
-	setActiveVideoDevice(videoDevice) {
-		return this.getVideoDevices()
-		.then(async (out) => {
-			out = out.result;
-			if (out && out.length > 0) {
-				let active = out.find(video => video.active == 1);
-				if (active)
-				{
-					this.updateVideoDevice(active.id, active.name, active.source, 0)
-					.then(result => {
-						if (result.status != 0) {
-							throw result.error;
-						}
-					});
-				}
-
-				return this.updateVideoDevice(videoDevice.id, videoDevice.name, videoDevice.source, 1);
-			}
+	setActiveVideoDevice(id) {
+		return this.db.query('UPDATE video SET active = CASE WHEN id = ? THEN 1 ELSE 0 END', id)
+		.then(out => {
+			return { status: 0 };
 		})
 		.catch (err => {
-			return { status: 1, error: 'Ошибка изменения активного видео: ' + err};
+			return { status: 1, error: 'Ошибка изменения активного видео устройства: ' + err};
 		});
-		
 	}
 
 	getActiveVideoDevice() {
-		return this.getVideoDevices()
+		return this.db.query('SELECT * FROM video WHERE active=1')
 		.then(out => {
 			if (out && out.length > 0){
-				return {status: 0, result: out[0]};
+				return { status: 0, result: out[0] };
 			}
-
-			return { status: 1, error: 'Ошибка получения активного видео: ' + err};
+			else {
+				return this.db.query('SELECT * FROM video ORDER BY id DESC LIMIT 1');
+			}
+		})
+		.then(out => {
+			if(out) {
+				if (out.result){
+					return out;
+				}
+				else {
+					return { status: 0, result: out[0] }; 
+				}
+			}
+			else {
+				throw 'Видео устройства отсутствуют';
+			}
 		})
 		.catch (err => {
-			return { status: 1, error: 'Ошибка получения активного видео: ' + err};
+			return { status: 1, error: 'Ошибка получения активного видео устройства: ' + err};
 		});
 	}
 
@@ -137,31 +119,21 @@ class dbManager {
 
 		return this.db.query(sql)
 		.then(out => {
-			if (out && options.id){
-				out = out[0];
-			}
-
-			if (out && out.length > 0)
-			{
-				let active = out.find(audio => audio.active == 1);
-				if (!active || active.length == 0){
-					out[0].active = 1;
-					return this.updateAudioDevice(out[0].id, out[0].name, out[0].path, out[0].active)
-					.then(ret => {
-						return {status: 0, result: out};
-					});
+			if (out) {
+				if(options.id) {
+					out = out[0];
 				}
-			}
 
-			return {status: 0, result: out};
+				return {status: 0, result: out};
+			}
+			else {
+				throw 'Аудио устройства отсутствуют';
+			}
 		})
 		.catch (err => {
-			console.log('EXCEPTION getAudioDevices: ', err);
-			return { status: 1, error: 'Ошибка получения списка аудио: ' + err};
+			return { status: 1, error: 'Ошибка получения списка аудио устройств: ' + err};
 		});
 	}
-
-
 
 	createAudioDevice(name, path) {
 		return this.db.query('INSERT INTO audio (name, path) VALUES (?,?)', [name, path])
@@ -169,19 +141,17 @@ class dbManager {
 			return({ status: 0});
 		})
 		.catch(err => {
-			console.log('EXCEPTION createAudioDevice: ', err);
-			return({ status: 1, error: 'Ошибка добавления аудио: ' + err});
+			return({ status: 1, error: 'Ошибка добавления аудио устройства: ' + err});
 		});
 	}
 
 	removeAudioDevice(id) {
-		return this.db.query('DELETE FROM audio WHERE id=?', [id])
+		return this.db.query('DELETE FROM audio WHERE id=?', id)
 		.then(out => {
-			return({ status: 0});
+			return({ status: 0 });
 		})
 		.catch(err => {
-			console.log('EXCEPTION removeAudioDevice: ', err);
-			return({ status: 1, error: 'Ошибка удаления аудио (id = ' + id + '): ' + err});
+			return({ status: 1, error: 'Ошибка удаления аудио устройства (id = ' + id + '): ' + err});
 		});
 	}
 
@@ -191,54 +161,52 @@ class dbManager {
 			return({ status: 0});
 		})
 		.catch(err => {
-			console.log('EXCEPTION updateAudioDevice: ', err);
-			return({ status: 1, error: 'Ошибка изменения аудио (id = ' + id + '): ' + err});
+			return({ status: 1, error: 'Ошибка изменения аудио устройства (id = ' + id + '): ' + err});
 		});
 	}
 
-	setActiveAudioDevice(audioDevice) {
-		return this.getVideoDevices()
+	setActiveAudioDevice(id) {
+		return this.db.query('UPDATE audio SET active = CASE WHEN id = ? THEN 1 ELSE 0 END', id)
 		.then(out => {
-			if (out && out.length > 0) {
-				let active = out.find(audio => audio.acive == 1);
-				if (active && active.length > 0)
-				{
-					return this.updateAudioDevice(active[0].id, active[0].name, active[0].path, 0)
-					.then(ret => {
-						if (ret.status != 0) {
-							throw ret.error;
-						}
-					});
-				}
-
-				return this.updateAudioDevice(audioDevice.id, audioDevice.name, audioDevice.path, 1);
-			}
+			return { status: 0 };
 		})
 		.catch (err => {
-			return { status: 1, error: 'Ошибка изменения активного аудио: ' + err};
+			return { status: 1, error: 'Ошибка изменения активного аудио устройства: ' + err};
 		});
-		
 	}
 
 	getActiveAudioDevice() {
-		return this.getAudioDevices()
+		return this.db.query('SELECT * FROM audio WHERE active=1')
 		.then(out => {
 			if (out && out.length > 0){
-				return {status: 0, result: out[0]};
+				return { status: 0, result: out[0] };
 			}
-
-			return { status: 1, error: 'Ошибка получения активного аудио: ' + err};
+			else {
+				return this.db.query('SELECT * FROM audio ORDER BY id DESC LIMIT 1');
+			}
+		})
+		.then(out => {
+			if(out) {
+				if (out.result){
+					return out;
+				}
+				else {
+					return { status: 0, result: out[0] }; 
+				}
+			}
+			else {
+				throw 'Аудио устройства отсутствуют';
+			}
 		})
 		.catch (err => {
-			return { status: 1, error: 'Ошибка получения активного аудио: ' + err};
+			return { status: 1, error: 'Ошибка получения активного аудио устройства: ' + err};
 		});
 	}
 
+
 	/*		General		*/
 	getGeneralSettings() {
-		let sql = 'SELECT * FROM general';
-
-		return this.db.query(sql)
+		return this.db.query('SELECT * FROM general')
 		.then(out => {
 			let ret = {};
 
@@ -253,24 +221,22 @@ class dbManager {
 			return { status: 0, result: ret };
 		})
 		.catch (err => {
-			console.log('EXCEPTION getAudioDevices: ', err);
-			return { status: 1, error: 'Ошибка получения списка аудио: ' + err};
+			return { status: 1, error: 'Ошибка получения общих настроек: ' + err};
 		});
 	}
 
 	updateGeneralSettings(settings = {}) {
 		return new Promise((resolve, reject) => {
+			let res = { status: 0, error: '' };
 
-			let res = {status: 0, error: ''};
-
-			Object.keys(settings).forEach(key => {
-				return this.db.query('UPDATE general SET value=? WHERE name=?', [settings[key], key])
+			Object.keys(settings).forEach(async (key) => {
+				this.db.query('UPDATE general SET value=? WHERE name=?', [settings[key], key])
 				.catch(err => {
-					console.log('EXCEPTION updateVideoDevice: ', err);
 					res.status = 1;
 					res.error = 'Ошибка изменения настроек: ' + err;
 				});
 			});
+
 			resolve(res);
 		});
 	}

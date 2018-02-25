@@ -10,8 +10,10 @@
 					if(!e.target.href) {
 						e.preventDefault();
 					}
-
-					els[i].classList.toggle('active');
+						
+					if(e.target.href.indexOf('#')+1) {
+						els[i].classList.toggle('active');
+					}
 				}
 			}
 		}
