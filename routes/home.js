@@ -7,7 +7,20 @@ const router = express.Router();
 let PAGE_PATH = 'home';
 
 const getVideoList = async () => {
-	return await dbManager.getVideoDevices({ order: { type: 'DESC' }});
+	let list = await dbManager.getVideoDevices({ order: { type: 'DESC' }});
+	let active_id = await dbManager.getActiveVideoDevice();
+
+	if(list && active_id && active_id.result) {
+		list.result = list.result.map(item => {
+			if(item.id == active_id.result.id) {
+				item.active = 1;
+			}
+
+			return item;
+		})
+	}
+
+	return list;
 };
 
 const getAudioList = async () => {
@@ -18,6 +31,7 @@ const getAudioList = async () => {
 router.get('/', async(req, res) => {
 	let video = await getVideoList();
 	let audio = await getAudioList();
+
 	if (video.status == 0) {
 		video = video.result;
 	}
@@ -25,62 +39,56 @@ router.get('/', async(req, res) => {
 		audio = audio.result;
 	}
 
-	console.log('treamServer.active', streamServer.active)
-	res.view(PAGE_PATH, { videoDevices: video, audioDevices: audio, isActiveStream: streamServer.active});
+	res.view(PAGE_PATH, { videoDevices: video, audioDevices: audio, streamingStartTime: streamServer.startTime });
 });
 
 //select device
-router.get('/selectDevice', async(req, res) => {
-	console.log('selectDevice', req.query)
-	let options = req.query,
-		deviceId = options.id;
-	let result;
+router.put('/selectDevice', async(req, res) => {
+	let query = req.query;
 
-	switch(options.type) {
-		case 'video':
-			let videoDevice = await dbManager.getVideoDevices({id: deviceId});
-
-			result = await dbManager.setActiveVideoDevice(videoDevice.result);
-
-			if (result.status == 0) {
-				streamServer.setActiveVideoDevice(videoDevice.result.source);
-
-			}
-			break;
-		case 'audio':
-			let audioDevice = await dbManager.getAudioDevices({id: deviceId});
-			result = await dbManager.setActiveAudioDevice(audioDevice);
-			if (result.status == 0) {
-				streamServer.setActiveAudioDevice(audioDevice.result.path);
-			}
-			break;
+	if(query.id) {
+		switch(query.type) {
+			case 'video':
+				dbManager.setActiveVideoDevice(query.id)
+				.then(out => {
+					if(out && out.status == 0) {
+						streamServer.init()
+						.then(() => streamServer.streamerRestart());
+					}
+				});
+				console.log('change video input')
+				break;
+		}
 	}
 
-	let video = await getVideoList();
-	let audio = await getAudioList();
-	if (video.status == 0) {
-		video = video.result;
-	}
-	if (audio.status == 0) {
-		audio = audio.result;
-	}
-
-	res.view(PAGE_PATH, { videoDevices: video, audioDevices: audio, isActiveStream: streamServer.active});
+	res.send({ status: 0 });
 });
 
 //streaming
-router.get('/streaming', (req, res) => {
-	let options = req.query,
-		command = options.command;
+// router.get('/streaming', (req, res) => {
+// 	let options = req.query,
+// 		command = options.command;
 
-	switch (command) {
-		case 'start':
-		break;
-		case 'stop':
-		break;
-	}
+// 	switch (command) {
+// 		case 'start':
+// 		break;
+// 		case 'stop':
+// 		break;
+// 	}
 
-	return {status: 0, message: 'Трансляция начата'}
-});
+// 	return {status: 0, message: 'Трансляция начата'}
+// });
+
+
+router.get('/stst', (req, res) => {
+	streamServer.streamerStop();
+	res.send({ ok:1 });
+})
+
+
+router.get('/stst2', (req, res) => {
+	streamServer.streamerRestart();
+	res.send({ ok:1 });
+})
 
 export default router;

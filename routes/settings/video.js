@@ -9,9 +9,11 @@ const getVideoList = async () => {
 	return await dbManager.getVideoDevices({ order: { type: 'DESC' }});
 };
 
+
+// index
 router.get('/', async (req, res) => {
-	let out = await getVideoList();
-	res.view(PAGE_PATH, { result: out.result });
+	let list = await getVideoList();
+	res.view(PAGE_PATH, { result: list.result });
 });
 
 // create new video device
@@ -38,6 +40,7 @@ router.post('/', async (req, res) => {
 router.get('/remove/:id', async (req, res) => {
 	let out = await dbManager.removeVideoDevice(req.params.id);
 	let list = await getVideoList();
+
 	if (out.status == 0) {
 		res.view('/' + PAGE_PATH, { status: 0, result: list.result, success: 'Успешно удалено' });
 	}
@@ -64,6 +67,7 @@ router.post('/update/:id', async (req, res) => {
 
 	let out = await dbManager.updateVideoDevice(req.params.id, form.name, form.url);
 	let list = await getVideoList();
+	
 	if (out.status == 0) {
 		res.view('/' + PAGE_PATH, {status: 0, success: 'Успешно изменено', result: list.result}); 
 	}

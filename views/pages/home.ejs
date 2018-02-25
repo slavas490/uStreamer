@@ -1,64 +1,47 @@
 <% if(data.status && data.status != 0) { %>
 	<div class="alert danger"><%= data.error %></div>
-<% } console.log('ISACTIVE', data.isActiveStream)%>
+<% } %>
 
 <canvas data-ui="canvas" id="canvas_stream"></canvas>
 
 <div id="stream-control">
-	<div class="timer">00:15:12</div>
-	<div style="display: flex;">
-		<button class="btn <%=(data.isActiveStream == true ? 'display-none' : '')%>" data-ui="adsa" data-ui-group='asd' onclick="sendStartStreaming()">Начать трансляцию</button>
-		<button class="btn danger <%=(data.isActiveStream == true ? '' : 'display-none')%>">Остановить</button>
+	<div class="timer display-none" data-ui-group="timer" data-ui="main"></div>
+	<div>
+		<button class="btn" data-ui-group="btn_streaming" data-ui="start">Начать трансляцию</button>
+		<button class="btn danger display-none" data-ui-group="btn_streaming" data-ui="stop">Остановить</button>
 	</div>
 </div>
 
 <div class="container-flex">
 	<div class="list-group">
 		<div class="title">Источник видео</div>
-		<ul class="body">
-			<% if( data.videoDevices &&  data.videoDevices.length > 0) {%>
+		<ul class="body" data-ui="video-devices">
+			<% if(data.videoDevices) { %>
 				<% for(let i = 0; i < data.videoDevices.length; i++) { %>
-					<li  class="<%=(data.videoDevices[i].active == 1) ? 'active' : ''%>">
-						<a href="<%= '/selectDevice?type=video&id=' + data.videoDevices[i].id%>" %>)"> 
-						<div class="name"><%=data.videoDevices[i].name%></div>
-						<div class="info"><%=data.videoDevices[i].source%> </div>	
-					</a></li>
+					<li onclick="streaming.selectVideoDevice(this)" data-id="<%=data.videoDevices[i].id%>" class="<%=(data.videoDevices[i].active == 1) ? 'active' : ''%>">
+						<a href="#"> 
+							<div class="name"><%=data.videoDevices[i].name%></div>
+							<div class="info"><%=data.videoDevices[i].source%></div>	
+						</a>
+					</li>
 				<% }%>
-			<% }%>
+			<% } %>
 		</ul>
 	</div>
 	<div class="list-group">
 		<div class="title">Источник звука</div>
 		<ul class="body">
 			<% for(let i = 0; i < data.audioDevices.length; i++) {  %>
-				<li class="<%=(data.audioDevices[i].active == 1) ? 'active' : ''%>" ><a href="/" onclick="onAudioDeviceSelect(<%=JSON.stringify(data.audioDevices[i])%>)"> 
+				<li class="<%=(data.audioDevices[i].active == 1) ? 'active' : ''%>"><a href="/" onclick="onAudioDeviceSelect(<%=JSON.stringify(data.audioDevices[i])%>)"> 
 					<div class="name"><%=data.audioDevices[i].name%></div>
-					<div class="info"><%=data.audioDevices[i].path%> </div>	
+					<div class="info"><%=data.audioDevices[i].path%></div>	
 				</a></li>
-			<%}%>
+			<% } %>
 		</ul>
+	</div>
 </div>
 
 <script src="/js/ctrl_stream.js"></script>
-<script type="text/javascript">
-	function onVideoDeviceSelect(videoDevice) { 
-		console.log('onVideoDeviceSelect');
-		console.dir('videoDevice', videoDevice);
-		fetch("/selectDevice?type=video&id=" + videoDevice.id, {
-    		method: "GET"
-		})
-		.then(out => { console.log('OOOOK');} );
-	}
-
-	function onAudioDeviceSelect(audioDevice) {
-		fetch("/selectDevice?type=audio&id=" + audioDevice.id, {
-    		method: "PUT"
-		})
-	}
-
-	function sendStartStreaming() {
-		console.log('Start')
-		fetch('streaming/start')
-		.then((out) => console.log('Ok'));
-	}
-</script>
+<% if(data.streamingStartTime) { %>
+<script type="text/javascript">streaming.start(<%= parseInt((new Date())-data.streamingStartTime)/1000 %>)</script>
+<% } %>
