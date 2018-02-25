@@ -198,6 +198,10 @@ body .wrapper {
     }
 }
 
+.display-none {
+    display: none;
+}
+
 @keyframes onair {
     0% {
         color: lighten($color-first, 15%);
