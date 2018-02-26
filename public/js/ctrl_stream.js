@@ -79,11 +79,6 @@ let streaming = {
             }
         }
 
-<<<<<<< HEAD
-        
-
-=======
->>>>>>> master
         fetch('selectDevice?type=video&id=' + id, { method: 'PUT' });
     }
 };
@@ -95,12 +90,7 @@ let streaming = {
 
     // WebSocket
     let ws = new WebSocket('ws://localhost:9999');
-<<<<<<< HEAD
-    // ws.onmessage = e => {
-    //     console.log('1')
-    // }
-=======
->>>>>>> master
+
     streaming.ws = ws;
 
     // Streaming player
