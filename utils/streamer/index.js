@@ -24,11 +24,19 @@ class streamer {
 	}
 
 	setActiveVideoDevice(path) {
+<<<<<<< HEAD
 		this.options.device.video.source = path;
 	}
 
 	setActiveAudioDevice(path) {
 		this.options.device.audio.source = path;
+=======
+		this.options.device.video = path;
+	}
+
+	setActiveAudioDevice(path) {
+		this.options.device.audio = path;
+>>>>>>> master
 	}
 
 	setGeneralSettings(youtube) {
@@ -43,7 +51,11 @@ class streamer {
 			forwardOption = '-f mpeg1video -b:v 800k -r 30 -';
 
 		if(this.active) {
+<<<<<<< HEAD
 			params = `-f lavfi -i anullsrc -rtsp_transport udp -i ${options.device.video.source} -vcodec libx264 -pix_fmt + -c:v copy -c:a aac -strict experimental -f flv ${target_url} ${forwardOption}`;
+=======
+			params = `-f lavfi -i anullsrc -rtsp_transport udp -i ${options.device.video} -vcodec libx264 -pix_fmt + -c:v copy -c:a aac -strict experimental -f flv ${target_url} ${forwardOption}`;
+>>>>>>> master
 		}
 		else {
 			params = `-rtsp_transport udp -i ${options.device.video.source} ${forwardOption}`;
@@ -95,7 +107,11 @@ class streamer {
 		this.ws = new ws.Server({ port });
 
 		this.ws.on('connection', (socket) => {
+<<<<<<< HEAD
 			this.streamerSendHeader(socket);
+=======
+			this.streamerStart(socket);
+>>>>>>> master
 			socket.on('message', msg => this.wsEvent(socket, 'data', msg));
 		});
 	}
@@ -107,12 +123,20 @@ class streamer {
 			if(data[1] == 'start') {
 				this.startTime = new Date();
 				this.active = true;
+<<<<<<< HEAD
 				this.streamerStart();
+=======
+				this.streamerStart(socket);
+>>>>>>> master
 			}
 			else if(data[1] == 'stop') {
 				this.startTime = 0;
 				this.active = false;
+<<<<<<< HEAD
 				this.streamerStart();
+=======
+				this.streamerStart(socket);
+>>>>>>> master
 			}
 		}
 	}
@@ -138,7 +162,23 @@ class streamer {
 
 		if(!videoDevice) return;
 
+<<<<<<< HEAD
 		if(!this.stream) {
+=======
+		this.getVideoInfo(videoDevice)
+		.then(video_info => {
+			this.streamerStop();
+
+			if(socket) {
+				this.streamerSendHeader(socket, video_info);
+			}
+			else {
+				this.ws.clients.forEach(client => {
+					this.streamerSendHeader(client, video_info);
+				});
+			}
+
+>>>>>>> master
 			this.stream = spawn('ffmpeg', this.ffmpegTemplate(), {
 				detached: false
 			});
@@ -174,6 +214,7 @@ class streamer {
 	}
 
 	streamerRestart () {
+<<<<<<< HEAD
 		this.streamerStop();
 		this.streamerStart();
 console.log(this.ws.clients.size)
@@ -190,12 +231,25 @@ console.log(this.ws.clients.size)
 				this.setActiveVideoDevice(out.result.source);
 				
 				return this.getVideoInfo(out.result.source);
+=======
+		streamServer.wsStart(settings.general.streamer.server.port);
+	}
+
+	init () {	
+		return dbManager.getActiveVideoDevice()
+		.then(out => {
+			if(out.result) {
+				streamServer.setActiveVideoDevice(out.result.source);
+				
+				return dbManager.getActiveAudioDevice();
+>>>>>>> master
 			}
 			else {
 				throw 'Cannot set default video device';
 			}
 		})
 		.then(out => {
+<<<<<<< HEAD
 			if(out && out.video) {
 				this.options.device.video.width = out.video.width;
 				this.options.device.video.height = out.video.height;
@@ -210,6 +264,11 @@ console.log(this.ws.clients.size)
 			if(out.result) {
 				this.setActiveAudioDevice(out.result.path);
 
+=======
+			if(out.result) {
+				streamServer.setActiveAudioDevice(out.result.path);
+
+>>>>>>> master
 				return dbManager.getGeneralSettings();
 			}
 			else {
@@ -218,7 +277,11 @@ console.log(this.ws.clients.size)
 		})
 		.then(out => {
 			if(out.result) {
+<<<<<<< HEAD
 				this.setGeneralSettings(out.result);
+=======
+				streamServer.setGeneralSettings(out.result);
+>>>>>>> master
 			}
 			else {
 				throw 'Cannot set general settings';
@@ -233,6 +296,9 @@ console.log(this.ws.clients.size)
 
 let streamServer = new streamer();
 streamServer.wsStart(settings.general.streamer.server.port);
+<<<<<<< HEAD
 streamServer.init();
+=======
+>>>>>>> master
 
 module.exports = streamServer;
