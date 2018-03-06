@@ -53,18 +53,13 @@ router.put('/selectDevice', async(req, res) => {
 				.then(out => {
 					if(out && out.status == 0) {
 						streamServer.init()
-<<<<<<< HEAD
 						.then(() => streamServer.streamerRestart());
-=======
-						.then(() => streamServer.streamerStart());
->>>>>>> master
 					}
 				});
 				console.log('change video input')
 				break;
 		}
 	}
-<<<<<<< HEAD
 
 	res.send({ status: 0 });
 });
@@ -88,15 +83,12 @@ router.put('/selectDevice', async(req, res) => {
 router.get('/stst', (req, res) => {
 	streamServer.streamerStop();
 	res.send({ ok:1 });
-})
-=======
 });
->>>>>>> master
 
 
 router.get('/stst2', (req, res) => {
 	streamServer.streamerRestart();
 	res.send({ ok:1 });
-})
+});
 
 export default router;

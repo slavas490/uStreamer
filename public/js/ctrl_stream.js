@@ -95,6 +95,8 @@ let streaming = {
 
     // Streaming player
     streaming.player = new jsmpeg(ws, { canvas: ui.canvas });
+    console.log('WS', streaming.ws);
+    console.log('PLAYER', streaming.player);
 
     /*  ui bindings */
     // start
