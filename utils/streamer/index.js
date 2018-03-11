@@ -41,12 +41,12 @@ class streamer {
 			options = this.options,
 			target_url = buildUrl(options.youtube.url, { path: options.youtube.key }),
 			forwardOption = '-f mpeg1video -b:v 800k -r 30 -';
-
 		if(this.active) { //-i "Микрофон (Устройство с поддержкой High Definition Audio)"
-			params = `-f lavfi -i anullsrc -rtsp_transport udp -i ${options.device.video.source} -f dshow -i audio="Микрофон (Устройство с поддержкой High Definition Audio)" -vcodec libx264 -pix_fmt + -c:v copy -c:a aac -strict experimental -f flv ${target_url} ${forwardOption}`;
+			// -f lavfi -i anullsrc 
+			params = `-rtsp_transport tcp -i ${options.device.video.source} -tune zerolatency -vcodec libx264 -t 12:00:00 -pix_fmt + -bufsize 160000 -c:v copy -c:a aac -b:a 320k -f flv ${target_url} ${forwardOption}`;
 		}
 		else {
-			params = `-rtsp_transport udp -i ${options.device.video.source} ${forwardOption}`;
+			params = `-rtsp_transport tcp -i ${options.device.video.source} ${forwardOption}`;
 		}
 console.log(params)
 		return params.split(' ');
@@ -135,11 +135,21 @@ console.log(params)
 	}
 
 	streamerStart (socket) {
+		console.log('STREAMER START')
 		let videoDevice = this.options.device.video;
 
-		if(!videoDevice) return;
+		if(!videoDevice) { 
+			console.log('unknown video device')
+			return; 
+		}
 
-		if(!this.stream) {
+		//console.log('STREAM', this.stream)
+		//if(!this.stream) {
+			let cmd = 'ffmpeg';
+			this.ffmpegTemplate().forEach(param => {
+				cmd += ' ' + param;
+			});
+			console.log('CMD');
 			this.stream = spawn('ffmpeg', this.ffmpegTemplate(), {
 				detached: false
 			});
@@ -150,7 +160,7 @@ console.log(params)
 			// this.stream.stderr.on('data', data => {
 			// 	return self.emit('ffmpegError', data);
 			// });
-		}
+		//}
 	}
 
 	streamerSendHeader (socket) {
@@ -188,11 +198,12 @@ console.log(this.ws.clients.size)
 	}
 
 	init () {
+	console.log('INIT')
 		return dbManager.getActiveVideoDevice()
 		.then(out => {
 			if(out.result) {
 				this.setActiveVideoDevice(out.result.source);
-				
+				console.log('setActiveVideoDevice', out.result)
 				return this.getVideoInfo(out.result.source);
 			}
 			else {
@@ -201,6 +212,7 @@ console.log(this.ws.clients.size)
 		})
 		.then(out => {
 			if(out && out.video) {
+				console.log('getVideoInfo', out.video)
 				this.options.device.video.width = out.video.width;
 				this.options.device.video.height = out.video.height;
 
@@ -221,6 +233,7 @@ console.log(this.ws.clients.size)
 		})
 		.then(out => {
 			if(out.result) {
+				console.log('GENERAL SETT', out.result)
 				this.setGeneralSettings(out.result);
 			}
 			else {
