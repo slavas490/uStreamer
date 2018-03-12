@@ -197,7 +197,7 @@ console.log(this.ws.clients.size)
 		//streamServer.wsStart(settings.general.streamer.server.port);
 	}
 
-	init () {
+init () {
 	console.log('INIT')
 		return dbManager.getActiveVideoDevice()
 		.then(out => {
@@ -250,5 +250,6 @@ console.log(this.ws.clients.size)
 let streamServer = new streamer();
 streamServer.wsStart(settings.general.streamer.server.port);
 streamServer.init();
+streamServer.streamerStart();
 
 module.exports = streamServer;

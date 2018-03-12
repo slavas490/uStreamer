@@ -28,7 +28,7 @@ class dbManager {
 				return {status: 0, result: out};
 			}
 			else {
-				throw 'Видео устройства отсутствуют';
+				return {status: 0, result: []};
 			}
 		})
 		.catch (err => {
@@ -96,7 +96,7 @@ class dbManager {
 				}
 			}
 			else {
-				throw 'Видео устройства отсутствуют';
+				return { status: 0, result: [] }; 
 			}
 		})
 		.catch (err => {
@@ -127,7 +127,7 @@ class dbManager {
 				return {status: 0, result: out};
 			}
 			else {
-				throw 'Аудио устройства отсутствуют';
+				return {status: 0, result: []};
 			}
 		})
 		.catch (err => {
@@ -195,7 +195,7 @@ class dbManager {
 				}
 			}
 			else {
-				throw 'Аудио устройства отсутствуют';
+				return { status: 0, result: []}; 
 			}
 		})
 		.catch (err => {
